@@ -1,6 +1,7 @@
 const reader = new FileReader();
 let image=new Image();
 let inputImage = document.querySelector('input[type="file"]');
+var images=document.querySelectorAll("img");
 document.getElementById('upload').addEventListener('change', function() {
     const file = this.files[0];
     if (file) {
@@ -100,8 +101,10 @@ chrome.tabs.query({active: true},(tabs)=>{
 function grabImages() {
   // Query all images on a target web page
   // and return an array of their URLs
-  const images= document.querySelectorAll("img");
-  return Array.from(images).map(image=>image.src);
+  images= document.querySelectorAll("img");
+  images=Array.from(images);
+  console.log("Grab() called");
+  return images.map(image=>image.src);
 }
 
 /**
@@ -146,12 +149,43 @@ function onResult(frames) {
   else{
     console.log("NO IMAGES");
   }
-
+  let predictionsResponse
   fetch('http://127.0.0.1:5000/upload-urls', {
     method: 'POST',
     body: formData,
   }).then(response => response.json())
-  .then(data => console.log(data))
+  .then(data =>{ 
+    console.log(data);
+    predictionsResponse=data['prediction']
+    console.log(predictionsResponse);
+    images=Array.from(images)
+    for(var i = 0; i < imageUrls.length; i++){
+      if(predictionsResponse[imageUrls[i]]=="Violence"){
+        // Blur
+        console.log(imageUrls[i]);
+        const imageUrl = imageUrls[i];
+        chrome.tabs.query({active: true},(tabs)=>{
+          const tab=tabs[0];
+          if(tab){
+            chrome.scripting.executeScript(
+              {
+                  target:{tabId: tab.id, allFrames: true},
+                  func:blurImage,
+                  args:[imageUrl]
+              },
+              () => {
+                console.log("ggEZ"); // This will be executed after the script execution is complete
+            }
+          )
+          }else{
+            alert("Not tabs active")
+          }
+        })
+        console.log("Blurred");
+        // console.log(imageUrls[i]);
+      }
+    }
+  })
   .catch(error => console.error(error));
 
 }
@@ -168,4 +202,38 @@ function executeScript(tab) {
   )
 }
 
-  
+// Function to blur an image
+function blurImage(imageUrl) {
+  console.log("blur() called");
+  console.log(imageUrl);
+  var images = document.getElementsByTagName('img');
+
+    for (var i = 0; i < images.length; i++) {
+        // Check if the image source matches the provided URL
+        if (images[i].src == imageUrl) {
+            // Apply a CSS blur filter to the image
+            images[i].style.filter = 'blur(30px)';
+        }
+    }
+}
+
+
+// Iterate over the images
+
+// for (var i = 0; i < images.length; i++) {
+//   var img = images[i];
+
+//   // Send the image to your server for classification
+//   fetch('https://your-server.com/classify', {
+//       method: 'POST',
+//       body: JSON.stringify({ imageUrl: img.src }),
+//       headers: { 'Content-Type': 'application/json' }
+//   })
+//   .then(response => response.json())
+//   .then(data => {
+//       // If the image is classified as violent, blur it
+//       if (data.isViolent) {
+//           blurImage(img);
+//       }
+//   });
+// }
