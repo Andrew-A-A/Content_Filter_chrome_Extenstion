@@ -12,7 +12,7 @@ Follow these simple steps to load the extension into your Chrome or Edge browser
 
 1. **Clone the Repository:**
    ```
-   git clone https://github.com/yourusername/YourExtensionName.git
+   git clone hhttps://github.com/Andrew-A-A/Contient_Filter_chrome_Extenstion.git
    ```
 
 2. **Open Chrome or Edge and Navigate to Extensions:**
