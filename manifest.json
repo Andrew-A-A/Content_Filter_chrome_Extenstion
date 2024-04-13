@@ -1,0 +1,27 @@
+{
+    "manifest_version": 3,
+    "name": "Content Filter",
+    "description": "Hide Non-sutable content for kids",
+    "version": "1.0",
+    "action": {
+      "default_popup": "index.html",
+      "default_icon": "logo.png"
+    },
+    "host_permissions": ["http://127.0.0.1:5000/","http://*/*", "https://*/*"],
+    "minimum_chrome_version": "109",
+   "content_scripts": [
+		{
+			"js": ["contentScript.js"],
+			"matches": ["https://*/*", "http://*/*"],
+			"run_at": "document_start"
+		}
+	],
+   "permissions": ["storage", "offscreen","contextMenus","activeTab","scripting",
+   "tabs",
+   "notifications"],
+   "background":{
+    "service_worker": "background.js",
+    "type": "module"
+   }
+
+  }

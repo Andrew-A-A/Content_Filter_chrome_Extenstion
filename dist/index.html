@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <style>
+    html {
+      height: 300px; 
+      width: 300px;      
+    }
+    </style>
+      <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.9.0/dist/tf.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Processor</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+  <style>
+    /* Center align the content */
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+  </style>
+  <script type="module" crossorigin src="/assets/index-3cfb730f.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <div>
+    <label id="loading">loading....</label>
+    <!-- Input to load image from PC -->
+    <input type="file" id="upload" accept="image/*" style="display: none;">
+    <label for="upload" class="btn btn-primary">Upload Image</label>
+
+    <button id="predict" class="btn btn-primary">Predict Image</button>
+
+    <!-- Image viewer to preview loaded image -->
+    <div id="imagePreview" style="width: 100px; height: 100px;"></div>
+
+    <!-- Text view to show the result text after processing the loaded image -->
+    <div id="resultText" style="margin-top: 20px;"></div>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script type="module" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<!-- TensorFlow.js -->
+<script type="module"  src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+
+<script  src="index.js"></script>
+
+
+</body>
+</html>

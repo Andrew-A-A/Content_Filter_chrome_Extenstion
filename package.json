@@ -1,0 +1,19 @@
+{
+	"name": "tensorflowjs",
+	"version": "1.0.0",
+	"type": "module",
+	"scripts": {
+		"build": "vite build",
+		"dev": "vite build --watch",
+		"release": "bestzip extension.zip dist manifest.json src/assets src/background.js src/constants.js src/translations.js src/popup.html src/popup.js src/offscreen.html src/offscreen.js src/modules/* tfjs/*"
+	},
+	"devDependencies": {
+		"bestzip": "^2.2.1",
+		"vite": "^4.4.9"
+	},
+	"dependencies": {
+		"express":"latest",
+		"@tensorflow/tfjs": "latest",
+		"bootstrap": "^5.3.3"
+	}
+}
