@@ -1,6 +1,6 @@
-**Chrome and Edge Extension: YourExtensionName**
+**Chrome and Edge Extension: Content Filter**
 
-Welcome to the repository for YourExtensionName, a browser extension designed to enhance your browsing experience on both Chrome and Edge! This extension offers [mention its main features or purpose].
+Welcome to the repository for Content Filter, a browser extension designed to enhance your browsing experience on both Chrome and Edge!
 
 ### Backend Project
 
@@ -34,23 +34,7 @@ Follow these simple steps to load the extension into your Chrome or Edge browser
 5. **Confirm Loading:**
    - You should now see the extension added to your list of installed extensions. Make sure it's enabled by toggling the switch if necessary.
 
-6. **Enjoy YourExtensionName:**
-   - YourExtensionName is now successfully loaded into your Chrome or Edge browser! [Optional: Add any additional instructions or customization options here.]
+6. **Enjoy Content Filter:**
+   - Content Filter is now successfully loaded into your Chrome or Edge browser!
 
-### Contributing
 
-If you'd like to contribute to the development of YourExtensionName, feel free to fork this repository, make your changes, and submit a pull request. We welcome any improvements or feature suggestions!
-
-### Issues
-
-If you encounter any bugs, have suggestions, or need assistance, please don't hesitate to open an issue on this repository. We'll do our best to address it promptly.
-
-### License
-
-This project is licensed under the [MIT License](LICENSE) - see the LICENSE file for details.
-
-### About Us
-
-YourExtensionName is maintained by [YourName] and [ContributorName]. We're passionate about creating useful tools for the Chrome and Edge browser communities.
-
-Happy browsing with YourExtensionName!
