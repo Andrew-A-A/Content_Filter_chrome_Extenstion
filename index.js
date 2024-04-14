@@ -103,8 +103,36 @@ function grabImages() {
   // and return an array of their URLs
   images= document.querySelectorAll("img");
   images=Array.from(images);
-  console.log("Grab() called");
+  console.log("GrabImage() called");
   return images.map(image=>image.src);
+}
+
+// function grabText(){
+//   //Query all paragraphs on a target web page
+//   //and return an array of their text
+//   paragraphs=document.querySelectorAll("*");
+//   paragraphs=Array.from(paragraphs);
+//   console.log("GrabParagraphs() called");
+//   return paragraphs.map(paragraph=>paragraph.innerText);
+
+// }
+function grabText() {
+  // Query all text nodes on a target web page
+  // and return an array of their text
+  const textNodes = [];
+  const walk = document.createTreeWalker(
+    document.body,
+    NodeFilter.SHOW_TEXT,
+    null,
+    false
+  );
+
+  while (walk.nextNode()) {
+    textNodes.push(walk.currentNode);
+  }
+
+  console.log("GrabText() called");
+  return textNodes.map(node => node.textContent);
 }
 
 /**
@@ -189,6 +217,38 @@ function onResult(frames) {
   .catch(error => console.error(error));
 
 }
+function onTextResult(results) {
+  // If script execution failed on the remote end 
+  // and could not return results
+  if (!results ||!results.length) { 
+      alert("Could not retrieve text from specified page");
+      return;
+  }
+
+  // Combine arrays of the text content from 
+  // each frame to a single array
+  let textContent = results.reduce((acc, result) => {
+    return acc.concat(result);
+  }, []);
+
+  // Log the text content to the console
+  console.log("Text content:", textContent);
+
+  // Do something with the text content, such as sending it to a server
+  // for further processing
+  fetch('http://example.com/process-text', {
+    method: 'POST',
+    body: JSON.stringify({ textContent: textContent }),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+ .then(response => response.json())
+ .then(data => {
+    // Handle the processed data (e.g., display it to the user)
+  })
+ .catch(error => console.error('Error:', error));
+}
 
 function executeScript(tab) {
   // Execute a function on a page of the current browser tab
@@ -199,6 +259,13 @@ function executeScript(tab) {
           func:grabImages
       },
       onResult
+  )
+  chrome.scripting.executeScript(
+   {
+    target:{tabId:tab.id,allFrames:true},
+    func:grabText
+   },
+    onTextResult
   )
 }
 
