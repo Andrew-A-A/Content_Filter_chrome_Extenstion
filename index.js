@@ -227,25 +227,27 @@ function onTextResult(results) {
 
   // Combine arrays of the text content from 
   // each frame to a single array
+
   let textContent = results.reduce((acc, result) => {
-    return acc.concat(result);
+      console.log(result['result'])
+      return acc.concat(result['result']);
   }, []);
 
   // Log the text content to the console
   console.log("Text content:", textContent);
+  let formTextData=new FormData();
+  formTextData.append("textData",textContent)
 
   // Do something with the text content, such as sending it to a server
   // for further processing
-  fetch('http://example.com/process-text', {
+  fetch('http://127.0.0.1:5000/upload-text', {
     method: 'POST',
-    body: JSON.stringify({ textContent: textContent }),
-    headers: {
-      'Content-Type': 'application/json'
-    }
+    body: formTextData,
   })
  .then(response => response.json())
  .then(data => {
     // Handle the processed data (e.g., display it to the user)
+    console.log(data);
   })
  .catch(error => console.error('Error:', error));
 }
