@@ -2,6 +2,7 @@ const reader = new FileReader();
 let image=new Image();
 let inputImage = document.querySelector('input[type="file"]');
 var images=document.querySelectorAll("img");
+//#region Methods used only to test functionality with the dummy UI
 document.getElementById('upload').addEventListener('change', function() {
     const file = this.files[0];
     if (file) {
@@ -44,26 +45,7 @@ document.getElementById('upload').addEventListener('change', function() {
     }).then(response => response.json())
     .then(data => console.log(data))
     .catch(error => console.error(error));
-      
-    // url='http://127.0.0.1:5000/process-image'
-    // fetch(url, {
-    //   method: "POST",
-    //   body: JSON.stringify({
-    //     userId: 1,
-    //     img: image,
-    //     completed: false
-    //   }),
-    //   headers: {
-    //     "Content-type": "application/json; charset=UTF-8"
-    //   }
-    // }).then(response => response.json()).then(data => {
-    //       console.log('Response from Flask:', data);
-    //       // Handle the processed data (e.g., display it to the user)
-    //   }).catch(error => console.error('Error:', "error"));
   }
-
-
- 
 
 inputImage.addEventListener('change', function() {
     let formData = new FormData();
@@ -88,7 +70,10 @@ const grabBtn=document.getElementById("grabBtn");
 grabBtn.addEventListener("click",()=>{
   alert("clicked");
 })
+//#endregion
 
+
+// Gets current active tab and executes script on it
 chrome.tabs.query({active: true},(tabs)=>{
   const tab=tabs[0];
   if(tab){
@@ -98,6 +83,7 @@ chrome.tabs.query({active: true},(tabs)=>{
   }
 })
 
+// Gets all images urls 
 function grabImages() {
   // Query all images on a target web page
   // and return an array of their URLs
@@ -106,19 +92,9 @@ function grabImages() {
   console.log("GrabImage() called");
   return images.map(image=>image.src);
 }
-
-// function grabText(){
-//   //Query all paragraphs on a target web page
-//   //and return an array of their text
-//   paragraphs=document.querySelectorAll("*");
-//   paragraphs=Array.from(paragraphs);
-//   console.log("GrabParagraphs() called");
-//   return paragraphs.map(paragraph=>paragraph.innerText);
-
-// }
+// Query all strings on a target web page
+// and return an array of their text
 function grabText() {
-  // Query all text nodes on a target web page
-  // and return an array of their text
   const textNodes = [];
   const walk = document.createTreeWalker(
     document.body,
@@ -126,24 +102,14 @@ function grabText() {
     null,
     false
   );
-
   while (walk.nextNode()) {
     textNodes.push(walk.currentNode);
   }
-
   console.log("GrabText() called");
   return textNodes.map(node => node.textContent);
 }
 
-/**
- * Executed after all grabImages() calls finished on 
- * remote page
- * Combines results and copy a list of image URLs 
- * to clipboard
- * 
- * @param {[]InjectionResult} frames Array 
- * of grabImage() function execution results
- */
+// Handle the result of the remote script execution after get all images URLs
 function onResult(frames) {
   // If script execution failed on the remote end 
   // and could not return results
@@ -155,15 +121,6 @@ function onResult(frames) {
   // each frame to a single array
   let imageUrls = frames.map(frame=>frame.result)
                           .reduce((r1,r2)=>r1.concat(r2));
-  // Copy to clipboard a string of image URLs, delimited by 
-  // carriage return symbol  
-  // window.navigator.clipboard
-  //       .writeText(imageUrls.join("\n"))
-  //       .then(()=>{
-  //          // close the extension popup after data 
-  //          // is copied to the clipboard
-  //          window.close();
-  //       });
   alert("Sent");
   formData=new FormData();
   console.log(imageUrls)
@@ -210,13 +167,14 @@ function onResult(frames) {
           }
         })
         console.log("Blurred");
-        // console.log(imageUrls[i]);
+        console.log(imageUrls[i]);
       }
     }
   })
   .catch(error => console.error(error));
 
 }
+// Handle the result of the remote script execution after getting all the strings
 function onTextResult(results) {
   // If script execution failed on the remote end 
   // and could not return results
@@ -237,29 +195,15 @@ function onTextResult(results) {
   console.log("Text content:", textContent);
   let formTextData=new FormData();
   formTextData.append("textData",textContent)
-
-  // Do something with the text content, such as sending it to a server
-  // for further processing
   fetch('http://127.0.0.1:5000/upload-text', {
     method: 'POST',
     body: formTextData,
   })
  .then(response => response.json())
  .then(data => {
-    // Handle the processed data (e.g., display it to the user)
-    console.log(data);
+    // Handle the processed data
     text_prediction_dict=data["TextPrediction"];
-    // for(var i=0;i<textContent.length;i++){
-    //  if(text_prediction_dict[i]=="Toxic"){
-    //   console.log("Toxic Text blurred");
-    //   console.log(textContent[i]);
-    //   blurToxicText(textContent[i])
-    //  }
-    // }
     let i=0
-    console.log("SZ");
-    console.log(Object.keys(text_prediction_dict).length);
-    console.log(textContent);
     Object.entries(text_prediction_dict).forEach(([key, value]) => {
            if(value=="Toxic"){
       console.log("Toxic Text blurred");
@@ -291,22 +235,25 @@ function onTextResult(results) {
  .catch(error => console.error('Error:', error));
 }
 
+// Execute a function on a page of the current browser tab
+// and process the result of execution
 function executeScript(tab) {
-  // Execute a function on a page of the current browser tab
-  // and process the result of execution
+  //Execute the function to get the images
   chrome.scripting.executeScript(
       {
           target:{tabId: tab.id, allFrames: true},
           func:grabImages
       },
-      onResult
+      onResult //Handle the result recived after grab all images 
   )
+
+   //Execute the function to get the images
   chrome.scripting.executeScript(
    {
     target:{tabId:tab.id,allFrames:true},
     func:grabText
    },
-    onTextResult
+    onTextResult //Handle the result recived after grab all strings 
   )
 }
 
@@ -315,7 +262,6 @@ function blurImage(imageUrl) {
   console.log("blur() called");
   console.log(imageUrl);
   var images = document.getElementsByTagName('img');
-
     for (var i = 0; i < images.length; i++) {
         // Check if the image source matches the provided URL
         if (images[i].src == imageUrl) {
@@ -329,6 +275,7 @@ function blurImage(imageUrl) {
 function blurToxicText(toxicText) {
   console.log("toxicTextBlured()")
   console.log(toxicText)
+  // Inner function used to recurse on all nodes of the web page
   function getTextNodesIn(node) {
     var textNodes = [];
     if (node.nodeType == Node.TEXT_NODE) {
@@ -364,38 +311,3 @@ function blurToxicText(toxicText) {
       }
   }
 }
-
-// Helper function to get all text nodes in an element
-function getTextNodesIn(node) {
-  var textNodes = [];
-  if (node.nodeType == Node.TEXT_NODE) {
-      textNodes.push(node);
-  } else {
-      var children = node.childNodes;
-      for (var i = 0; i < children.length; i++) {
-          textNodes.push.apply(textNodes, getTextNodesIn(children[i]));
-      }
-  }
-  return textNodes;
-}
-
-
-// Iterate over the images
-
-// for (var i = 0; i < images.length; i++) {
-//   var img = images[i];
-
-//   // Send the image to your server for classification
-//   fetch('https://your-server.com/classify', {
-//       method: 'POST',
-//       body: JSON.stringify({ imageUrl: img.src }),
-//       headers: { 'Content-Type': 'application/json' }
-//   })
-//   .then(response => response.json())
-//   .then(data => {
-//       // If the image is classified as violent, blur it
-//       if (data.isViolent) {
-//           blurImage(img);
-//       }
-//   });
-// }
