@@ -248,6 +248,45 @@ function onTextResult(results) {
  .then(data => {
     // Handle the processed data (e.g., display it to the user)
     console.log(data);
+    text_prediction_dict=data["TextPrediction"];
+    // for(var i=0;i<textContent.length;i++){
+    //  if(text_prediction_dict[i]=="Toxic"){
+    //   console.log("Toxic Text blurred");
+    //   console.log(textContent[i]);
+    //   blurToxicText(textContent[i])
+    //  }
+    // }
+    let i=0
+    console.log("SZ");
+    console.log(Object.keys(text_prediction_dict).length);
+    console.log(textContent);
+    Object.entries(text_prediction_dict).forEach(([key, value]) => {
+           if(value=="Toxic"){
+      console.log("Toxic Text blurred");
+      console.log(key);
+      const textToBlur=textContent[i];
+      console.log("text to Blur");
+      console.log(textToBlur);
+      chrome.tabs.query({active: true},(tabs)=>{
+        const tab=tabs[0];
+        if(tab){
+          chrome.scripting.executeScript(
+            {
+                target:{tabId: tab.id, allFrames: true},
+                func:blurToxicText,
+                args:[key]
+            },
+            () => {
+              console.log("ggEZ2"); // This will be executed after the script execution is complete
+          }
+        )
+        }else{
+          alert("Not tabs active")
+        }
+      })
+     }
+     i++;
+  });
   })
  .catch(error => console.error('Error:', error));
 }
@@ -284,6 +323,60 @@ function blurImage(imageUrl) {
             images[i].style.filter = 'blur(30px)';
         }
     }
+}
+
+// This is a simplified example and might not work in all cases
+function blurToxicText(toxicText) {
+  console.log("toxicTextBlured()")
+  console.log(toxicText)
+  function getTextNodesIn(node) {
+    var textNodes = [];
+    if (node.nodeType == Node.TEXT_NODE) {
+        textNodes.push(node);
+    } else {
+        var children = node.childNodes;
+        for (var i = 0; i < children.length; i++) {
+            textNodes.push.apply(textNodes, getTextNodesIn(children[i]));
+        }
+    }
+    return textNodes;
+  }
+  // Get all text nodes in the body
+  var textNodes = getTextNodesIn(document.body);
+
+  // Loop through each text node
+  for (var i = 0; i < textNodes.length; i++) {
+      var node = textNodes[i];
+
+      // If the text node contains the toxic text
+      if (node.nodeValue.toLowerCase().includes(toxicText)) {
+          // Create a new span element
+          var span = document.createElement('span');
+
+          // Set the span's text content to the toxic text
+          span.textContent = toxicText;
+
+          // Apply a blur style to the span
+          span.style.filter = 'blur(5px)';
+
+          // Replace the toxic text in the text node with the new span
+          node.parentNode.replaceChild(span, node);
+      }
+  }
+}
+
+// Helper function to get all text nodes in an element
+function getTextNodesIn(node) {
+  var textNodes = [];
+  if (node.nodeType == Node.TEXT_NODE) {
+      textNodes.push(node);
+  } else {
+      var children = node.childNodes;
+      for (var i = 0; i < children.length; i++) {
+          textNodes.push.apply(textNodes, getTextNodesIn(children[i]));
+      }
+  }
+  return textNodes;
 }
 
 
