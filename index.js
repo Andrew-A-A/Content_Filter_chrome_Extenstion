@@ -3,83 +3,97 @@ let image=new Image();
 let inputImage = document.querySelector('input[type="file"]');
 var images=document.querySelectorAll("img");
 //#region Methods used only to test functionality with the dummy UI
-document.getElementById('upload').addEventListener('change', function() {
-    const file = this.files[0];
-    if (file) {
-      reader.onload = function() {
-        const imagePreview = document.getElementById('imagePreview');
-        imagePreview.innerHTML = `<img src="${reader.result}" class="img-fluid" style="max-width: 100px;">`;
-        image.src=reader.result;
-        // Simulating processing of the loaded image
-        const resultText = document.getElementById('resultText');
-        resultText.innerHTML = `<p>Image processed successfully!</p>`;
-      };
-      reader.readAsDataURL(file);
-    }
-  });
+// document.getElementById('upload').addEventListener('change', function() {
+//     const file = this.files[0];
+//     if (file) {
+//       reader.onload = function() {
+//         const imagePreview = document.getElementById('imagePreview');
+//         imagePreview.innerHTML = `<img src="${reader.result}" class="img-fluid" style="max-width: 100px;">`;
+//         image.src=reader.result;
+//         // Simulating processing of the loaded image
+//         const resultText = document.getElementById('resultText');
+//         resultText.innerHTML = `<p>Image processed successfully!</p>`;
+//       };
+//       reader.readAsDataURL(file);
+//     }
+//   });
 
-  document.getElementById('predict').onclick= async function(){
+//   document.getElementById('predict').onclick= async function(){
 
-    //document.getElementById("resultText").innerHTML=prediction;
+//     //document.getElementById("resultText").innerHTML=prediction;
 
-    let formData = new FormData();
-    formData.append('img',image);
-    formData.append('image', inputImage.files[0]);
+//     let formData = new FormData();
+//     formData.append('img',image);
+//     formData.append('image', inputImage.files[0]);
 
-    if(!formData.has('image'))
-      console.log("image Not loaded")
-    else
-      console.log("image loaded")
+//     if(!formData.has('image'))
+//       console.log("image Not loaded")
+//     else
+//       console.log("image loaded")
 
-    if(!formData.has('img'))
-      console.log("img Not loaded")
-    else
-      console.log("img loaded")
+//     if(!formData.has('img'))
+//       console.log("img Not loaded")
+//     else
+//       console.log("img loaded")
 
-    // Example code snippet in your extension's JavaScript
-    // Get your image file (e.g., from user input or storage)
+//     // Example code snippet in your extension's JavaScript
+//     // Get your image file (e.g., from user input or storage)
     
-    fetch('http://127.0.0.1:5000/process-image', {
-        method: 'POST',
-        body: formData,
-    }).then(response => response.json())
-    .then(data => console.log(data))
-    .catch(error => console.error(error));
-  }
+//     fetch('http://127.0.0.1:5000/process-image', {
+//         method: 'POST',
+//         body: formData,
+//     }).then(response => response.json())
+//     .then(data => console.log(data))
+//     .catch(error => console.error(error));
+//   }
 
-inputImage.addEventListener('change', function() {
-    let formData = new FormData();
-    formData.append('image', inputImage.files[0]);
+// inputImage.addEventListener('change', function() {
+//     let formData = new FormData();
+//     formData.append('image', inputImage.files[0]);
 
-    if(!formData.has('image'))
-      console.log("image Not loaded")
-    else
-    console.log("image loaded")
+//     if(!formData.has('image'))
+//       console.log("image Not loaded")
+//     else
+//     console.log("image loaded")
 
-    fetch('http://127.0.0.1:5000/test', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => console.log(data))
-    .catch(error => console.error(error));
-});
+//     fetch('http://127.0.0.1:5000/test', {
+//         method: 'POST',
+//         body: formData
+//     })
+//     .then(response => response.json())
+//     .then(data => console.log(data))
+//     .catch(error => console.error(error));
+// });
 
 
-const grabBtn=document.getElementById("grabBtn");
-grabBtn.addEventListener("click",()=>{
-  alert("clicked");
-})
+// const grabBtn=document.getElementById("grabBtn");
+// grabBtn.addEventListener("click",()=>{
+//   alert("clicked");
+// })
 //#endregion
 
 
-// Gets current active tab and executes script on it
-chrome.tabs.query({active: true},(tabs)=>{
-  const tab=tabs[0];
-  if(tab){
-    executeScript(tab);
-  }else{
-    alert("Not tabs active")
+
+let webAccessCheckbox=document.getElementById("check");
+let filterImagesCheckbox=document.getElementById("check1");
+let filterTextCheckbox=document.getElementById("check2");
+webAccessCheckbox.addEventListener('change',function(){
+  if(!(filterImagesCheckbox.checked||filterTextCheckbox.checked)){
+    alert("Please select at least one filter");
+    webAccessCheckbox.checked=false;
+    return;
+  }
+
+  if(webAccessCheckbox.checked){
+    // Gets current active tab and executes script on it
+    chrome.tabs.query({active: true},(tabs)=>{
+      const tab=tabs[0];
+      if(tab){
+        executeScript(tab);
+      }else{
+        alert("Not tabs active")
+      }
+  })
   }
 })
 
@@ -142,10 +156,12 @@ function onResult(frames) {
   .then(data =>{ 
     console.log(data);
     predictionsResponse=data['prediction']
+    multiClassPredictions=data['mulit-class-prediction']
     console.log(predictionsResponse);
     images=Array.from(images)
     for(var i = 0; i < imageUrls.length; i++){
-      if(predictionsResponse[imageUrls[i]]=="Violence"){
+      if(predictionsResponse[imageUrls[i]]=="Violence"||
+          multiClassPredictions[imageUrls[i]]!="normal"){
         // Blur
         console.log(imageUrls[i]);
         const imageUrl = imageUrls[i];
@@ -238,6 +254,7 @@ function onTextResult(results) {
 // Execute a function on a page of the current browser tab
 // and process the result of execution
 function executeScript(tab) {
+  if(filterImagesCheckbox.checked){
   //Execute the function to get the images
   chrome.scripting.executeScript(
       {
@@ -246,15 +263,17 @@ function executeScript(tab) {
       },
       onResult //Handle the result recived after grab all images 
   )
-
-   //Execute the function to get the images
-  chrome.scripting.executeScript(
-   {
-    target:{tabId:tab.id,allFrames:true},
-    func:grabText
-   },
-    onTextResult //Handle the result recived after grab all strings 
-  )
+}
+  if(filterTextCheckbox.checked){
+    //Execute the function to get the images
+    chrome.scripting.executeScript(
+    {
+      target:{tabId:tab.id,allFrames:true},
+      func:grabText
+    },
+      onTextResult //Handle the result recived after grab all strings 
+    )
+  }
 }
 
 // Function to blur an image

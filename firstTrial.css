@@ -1,0 +1,278 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+header {
+    width:350px;
+    height:50px;
+    background-color: #FFFFFF;
+    padding: 0px;
+    display: flex;
+    align-items: center;
+    
+    /* text-align: left; */
+}
+#logo img{
+   margin-top: 10px;
+    width:45px;
+    height:45px;
+}
+h1{
+    font-family:'Inter' ;
+    font-size: 18px;
+    font-weight: 200;
+    /* margin-left: 10px; */
+    margin:10px;
+    /* margin-bottom: 10px; */
+    align-self: center; 
+}
+h2{
+  text-align: center;
+}
+#p1{
+    text-align: center;
+
+    padding: 10px 60px;
+}
+body{
+    align-items: center; /* Center children horizontally */
+}
+button{
+    background-color: #A761C1;
+    width: 330px;
+    height:30px;
+    text-align: center;
+    align-self: center;
+    border: none;
+    color: white;
+    font-size: 18px;
+    font-weight: 500;
+    border-radius: 8px;
+    align-self: center;
+    margin-top: 20px;
+    /* margin-left: 8px; */
+}
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto; /* Creates two columns */
+    gap: 10px; /* Adds some space between the elements */
+  }
+
+  .check {
+
+ position: relative;
+ background:  #A461C1;
+ margin-top: 12px;
+ margin-left: 70px;
+ line-height: 0;
+ font-size: 25px;
+
+ /* display: flex;
+ align-items: center;
+ margin-bottom: 10px; */
+}
+
+.check input[type="checkbox"],
+.check label,
+.check label::before,
+.check label::after {
+ appearance: none;
+ display: inline-block;
+ font-size: inherit;
+ border-radius: 1em;
+ border: 0;
+ transition: .35s ease-in-out;
+ box-sizing: border-box;
+ cursor: pointer;
+}
+
+.check {
+ appearance: none;
+ display: inline-block;
+ border-radius: 1em;
+ border: 0;
+ transition: .35s ease-in-out;
+ box-sizing: border-box;
+ cursor: pointer;
+}
+
+.check label {
+ width: 2.2em;
+ height: 1em;
+ background: #d7d7d7;
+ overflow: hidden;
+}
+
+.check input[type="checkbox"] {
+ position: absolute;
+ z-index: 1;
+ width: .8em;
+ height: .8em;
+ top: .1em;
+ left: .1em;
+ background: linear-gradient(45deg, #dedede, #ffffff);
+ box-shadow: 0 6px 7px rgba(0,0,0,0.3);
+ outline: none;
+ /* margin-right: 10px; Add this to add space between checkbox and label */
+}
+
+.check input[type="checkbox"]:checked {
+ left: 1.3em;
+}
+
+.check input[type="checkbox"]:checked + label {
+ background: transparent;
+}
+
+.check label::before,
+.check label::after {
+ content: "· ·";
+ position: absolute;
+ overflow: hidden;
+ left: .50em;
+ top: .5em;
+ height: 1em;
+ letter-spacing: -.04em;
+ color: #9b9b9b;
+ font-family: "Times New Roman", serif;
+ z-index: 2;
+ font-size: .6em;
+ border-radius: 0;
+ transform-origin: 0 0 -.5em;
+ backface-visibility: hidden;
+}
+
+.check label::after {
+ content: "?";
+ top: .65em;
+ left: .6em;
+ height: .1em;
+ width: .35em;
+ font-size: .2em;
+ transform-origin: 0 0 -.4em;
+}
+
+.check input[type="checkbox"]:checked + label::before,
+.check input[type="checkbox"]:checked + label::after {
+ left: 2.55em;
+ top: .4em;
+ line-height: .1em;
+ transform: rotateY(360deg);
+}
+
+.check input[type="checkbox"]:checked + label::after {
+ height: .16em;
+ top: .55em;
+ left: 2.6em;
+ font-size: .6em;
+ line-height: 0;
+}
+
+
+
+@media (min-width: 350px) {
+  .col-sm-6 {
+    flex: 0 0 auto;
+    width: 50%;
+}
+}
+@media (min-width: 350px) {
+  .col-sm-4 {
+    flex: 0 0 auto;
+    width: 40%;
+}
+}
+
+.ExtensionOption {
+  background-color: #EAEAEA;
+  margin-bottom: 15px;
+  margin-left: 8px;
+  border-radius: 23px;
+  width: 310px;
+  height: 50px;
+  align-content: center;
+  justify-content: space-around;
+  /* display: flex; */
+  flex-wrap: wrap;
+ 
+}
+
+#filters{
+  margin-left: 20px;
+  margin-top: 10px;
+  align-items: center;
+}
+#web{
+  margin-right: 30px;
+  font-weight: 500;
+}
+.checkWeb{
+  position: relative;
+  background:  #A461C1;
+ line-height: 0;
+ font-size: 25px;
+ margin-left: 90px;
+}
+.checkWeb input[type="checkbox"],
+.checkWeb label,
+.checkWeb label::before,
+.checkWeb label::after {
+ appearance: none;
+ display: inline-block;
+ font-size: inherit;
+ border-radius: 1em;
+ border: 0;
+ transition: .35s ease-in-out;
+ box-sizing: border-box;
+ cursor: pointer;
+}
+.checkWeb {
+  appearance: none;
+  display: inline-block;
+  border-radius: 1em;
+  border: 0;
+  transition: .35s ease-in-out;
+  box-sizing: border-box;
+  cursor: pointer;
+ }
+ .checkWeb label {
+  width: 1.3em;
+  height: 0.5em;
+  background: #9c9b9b;
+  overflow: hidden;
+ }
+ /* CIRLE INSIDE THE BTN */
+ .checkWeb input[type="checkbox"] {
+  position: absolute;
+  z-index: 0.5;
+  width: .7em;
+  height: .7em;
+  top: -0.1em;
+  left: -0.1em;
+  background: linear-gradient(45deg, #dedede, #ffffff);
+  box-shadow: 0 3px 4px rgba(0,0,0,0.3);
+  outline: none;
+  /* margin-right: 10px; Add this to add space between checkbox and label */
+ }
+ .checkWeb input[type="checkbox"]:checked {
+  left: 0.7em;
+ }
+ 
+ .checkWeb input[type="checkbox"]:checked + label {
+  background: transparent;
+ }
+
+
+ 
+ /* .checkWeb input[type="checkbox"]:checked + label::before,
+ .checkWeb input[type="checkbox"]:checked + label::after {
+  left: 2.55em;
+  top: .4em;
+  line-height: .1em;
+  transform: rotateY(360deg);
+ } */
+ 
+ /* .checkWeb input[type="checkbox"]:checked + label::after {
+  height: .16em;
+  top: .55em;
+  left: 2.6em;
+  font-size: .6em;
+  line-height: 0;
+ } */
