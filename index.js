@@ -77,6 +77,7 @@ var images=document.querySelectorAll("img");
 let webAccessCheckbox=document.getElementById("check");
 let filterImagesCheckbox=document.getElementById("check1");
 let filterTextCheckbox=document.getElementById("check2");
+let loading_icon=document.getElementById("loading_icon");
 webAccessCheckbox.addEventListener('change',function(){
   if(!(filterImagesCheckbox.checked||filterTextCheckbox.checked)){
     alert("Please select at least one filter");
@@ -184,6 +185,7 @@ function onResult(frames) {
         })
         console.log("Blurred");
         console.log(imageUrls[i]);
+        loading_icon.style.display="none"
       }
     }
   })
@@ -238,6 +240,7 @@ function onTextResult(results) {
             },
             () => {
               console.log("ggEZ2"); // This will be executed after the script execution is complete
+              loading_icon.style.display="none";
           }
         )
         }else{
@@ -255,6 +258,7 @@ function onTextResult(results) {
 // and process the result of execution
 function executeScript(tab) {
   if(filterImagesCheckbox.checked){
+    loading_icon.style.display="block";
   //Execute the function to get the images
   chrome.scripting.executeScript(
       {
@@ -265,6 +269,7 @@ function executeScript(tab) {
   )
 }
   if(filterTextCheckbox.checked){
+    loading_icon.style.display="block";
     //Execute the function to get the images
     chrome.scripting.executeScript(
     {
