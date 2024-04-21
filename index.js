@@ -136,7 +136,7 @@ function onResult(frames) {
   // each frame to a single array
   let imageUrls = frames.map(frame=>frame.result)
                           .reduce((r1,r2)=>r1.concat(r2));
-  alert("Sent");
+  //alert("Sent");
   formData=new FormData();
   console.log(imageUrls)
   imageUrls=imageUrls.filter((url)=> url.includes('.png') ||url.includes('.jpeg')||url.includes('.jpg'))
