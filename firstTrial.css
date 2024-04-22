@@ -285,3 +285,10 @@ button{
  #p1{
   margin-bottom: 0px;
  }
+
+ #error{
+  color: red;
+  font-weight: 500;
+  font-size: 14px;
+  text-align: center;
+ }

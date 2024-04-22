@@ -78,13 +78,19 @@ let webAccessCheckbox=document.getElementById("check");
 let filterImagesCheckbox=document.getElementById("check1");
 let filterTextCheckbox=document.getElementById("check2");
 let loading_icon=document.getElementById("loading_icon");
+let errorText=document.getElementById("error");
+let ExtensionOption=document.getElementsByClassName("ExtensionOption");
 webAccessCheckbox.addEventListener('change',function(){
   if(!(filterImagesCheckbox.checked||filterTextCheckbox.checked)){
-    alert("Please select at least one filter");
+    //alert("Please select at least one filter");
     webAccessCheckbox.checked=false;
+    errorText.style.display="block";
+    [...ExtensionOption].forEach(i => {
+      i.style.border="1px solid red";
+    });
     return;
   }
-
+  
   if(webAccessCheckbox.checked){
     // Gets current active tab and executes script on it
     chrome.tabs.query({active: true},(tabs)=>{
@@ -97,7 +103,22 @@ webAccessCheckbox.addEventListener('change',function(){
   })
   }
 })
-
+filterImagesCheckbox.addEventListener('change',function(){
+  if(filterImagesCheckbox.checked||filterTextCheckbox.checked){
+    errorText.style.display="none";
+      [...ExtensionOption].forEach(i => {
+        i.style.border="none";
+      });
+  }
+})
+filterTextCheckbox.addEventListener('change',function(){
+  if(filterImagesCheckbox.checked||filterTextCheckbox.checked){
+    errorText.style.display="none";
+      [...ExtensionOption].forEach(i => {
+        i.style.border="none";
+      });
+  }
+})
 // Gets all images urls 
 function grabImages() {
   // Query all images on a target web page
