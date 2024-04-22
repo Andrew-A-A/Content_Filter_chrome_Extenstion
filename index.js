@@ -197,16 +197,17 @@ function onResult(frames) {
                   args:[imageUrl]
               },
               () => {
-                console.log("ggEZ"); // This will be executed after the script execution is complete
+                //console.log("ggEZ"); // This will be executed after the script execution is complete
             }
           )
           }else{
             alert("Not tabs active")
           }
         })
-        console.log("Blurred");
-        console.log(imageUrls[i]);
-        loading_icon.style.display="none"
+        //console.log("Blurred");
+        //console.log(imageUrls[i]);
+        if(!filterTextCheckbox.checked)
+          loading_icon.style.display="none"
       }
     }
   })
