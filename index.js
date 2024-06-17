@@ -76,6 +76,9 @@ var images=document.querySelectorAll("img");
 
 let webAccessCheckbox=document.getElementById("check");
 let filterImagesCheckbox=document.getElementById("check1");
+let fireImagesCheckbox=document.getElementById("fireCheck");
+let accidentImagesCheckbox=document.getElementById("accidentCheck");
+let damagdBuildingsImagesCheckbox=document.getElementById("damagedBuildingsCheck");
 let filterTextCheckbox=document.getElementById("check2");
 let loading_icon=document.getElementById("loading_icon");
 let errorText=document.getElementById("error");
@@ -171,6 +174,7 @@ function onResult(frames) {
     console.log("NO IMAGES");
   }
   let predictionsResponse
+  let multiClassPredictions
   fetch('http://127.0.0.1:5000/upload-urls', {
     method: 'POST',
     body: formData,
@@ -182,8 +186,8 @@ function onResult(frames) {
     console.log(predictionsResponse);
     images=Array.from(images)
     for(var i = 0; i < imageUrls.length; i++){
-      if(predictionsResponse[imageUrls[i]]=="Violence"||
-          multiClassPredictions[imageUrls[i]]!="normal"){
+      if(checkSelectedImgTypes(predictionsResponse[imageUrls[i]],
+        multiClassPredictions[imageUrls[i]])){
         // Blur
         console.log(imageUrls[i]);
         const imageUrl = imageUrls[i];
@@ -204,7 +208,7 @@ function onResult(frames) {
             alert("Not tabs active")
           }
         })
-        //console.log("Blurred");
+        console.log("Blurred");
         //console.log(imageUrls[i]);
         if(!filterTextCheckbox.checked)
           loading_icon.style.display="none"
@@ -303,6 +307,30 @@ function executeScript(tab) {
   }
 }
 
+function checkSelectedImgTypes(binaryResponse,multiClassResponse){
+  if(filterImagesCheckbox.checked){
+    if(fireImagesCheckbox.checked){
+      if(multiClassResponse=="fire"){
+          return false;
+        }
+      }
+      else if(damagdBuildingsImagesCheckbox.checked){
+        if(multiClassResponse=="damaged_buildings"){
+          return false;
+        }
+      }
+      else if(accidentImagesCheckbox.checked){
+        if(multiClassResponse=="accident"){
+          return false;
+        }
+      }
+      if(binaryResponse=="Violence" || multiClassResponse!="normal"){
+        return true;
+      }
+  }
+  return false;
+}
+
 // Function to blur an image
 function blurImage(imageUrl) {
   console.log("blur() called");
@@ -356,4 +384,6 @@ function blurToxicText(toxicText) {
           node.parentNode.replaceChild(span, node);
       }
   }
+
+
 }
