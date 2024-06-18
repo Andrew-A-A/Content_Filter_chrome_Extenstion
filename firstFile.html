@@ -17,12 +17,18 @@
           height: 607px;     
         }
         </style>
+    <div class="page" id="pageA">
     <header>
         <div id="logo">
             <img src="./Assets/logo.svg" alt="Content Guard Shield" >
             </div>
         <h1>Content Guard</h1>
-        
+        <div id="filter">
+            <a href="javascript:void(0);" onclick="goToPageB()">
+              <img src="./Assets/filter_icon.svg" alt="Content Guard Shield">
+            
+            </a>
+          </div>
     </header>
     <main>
         <section id="welcome-section">
@@ -36,10 +42,7 @@
             <h2>Welcome to Content Guard!</h2>
             <p id = "p1">  "Enhance online safety with real-time content filtering."</p>
 
-            <!-- <input type="checkbox" id="checkboxInput">
-            <label for="checkboxInput" class="toggleSwitch">
-            </label> -->
-            
+           
             <img alt="loading" style="display: none;" id="loading_icon"  src="/Assets/loading.svg">
             <div class="row">
                 <div class="col-sm-4" style=" text-align: end;
@@ -66,7 +69,7 @@
                         <input id="check1" type="checkbox">
                         <label for="check1"></label>
                     </div>
-                    <p id="filters">Allow <span style="font-weight: bold;">FFFire</span></p>
+                   <!-- <p id="filters">Allow <span style="font-weight: bold;">FFFire</span></p>
                     <div class="check">
                         <input id="fireCheck" type="checkbox">
                         <label for="fireCheck"></label>
@@ -80,7 +83,7 @@
                     <div class="check">
                         <input id="accidentCheck" type="checkbox">
                         <label for="accidentCheck"></label>
-                    </div>
+                    </div>-->
                 </div>
             </div>
         </div>
@@ -99,22 +102,55 @@
                 
             </div>
         </div>
-            
-            <!-- <div class="check">
-                <input id="check1" type="checkbox">
-                <label for="check1"></label>
-            </div>
-            
-            <div class="check">
-                <input id="check2" type="checkbox">
-                <label for="check2"></label>
-            </div> -->
-            
         </div>
         </section>
 
     </main>
+</div>
+<!--Settings Options-->
+<div class="page" id="pageB">
+    <div id="settings-overlay">
+        <h1>Settings</h1>
+        <p id="settings-paragraph">Allow image categories to appear on your web page</p>
 
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <label id="p11" for="fireCheck">Fire</label>
+                </div>
+                <div class="col-sm-4">
+                    <input id="fireCheck" type="checkbox" class="ui-checkbox">
+                </div>
+            </div>
+
+            <div class="row">
+                    <div class="col-sm-6">
+                        <label id="p11" for="accidentsCheck">Accidents</label>
+                    </div>
+                    <div class="col-sm-4">
+                        <input id="accidentCheck" type="checkbox" class="ui-checkbox">
+                    </div>
+            </div>
+                
+            <div class="row">
+                    <div class="col-sm-6">
+                        <label id="p11" for="damagedBuildingsCheck">Damaged buildings</label>
+                    </div>
+                    <div class="col-sm-4">
+                        <input id="damagedBuildingsCheck" type="checkbox" class="ui-checkbox" >
+                    </div>
+                
+                
+            </div>
+       
+        </div>
+        
+        
+        <button id="btn1" >Cancel</button>
+        <button id="btn2" onclick="ApplyChanges()">Apply</button>
+    </div>
+
+</div>
     <!-- <script src="firstTrial.js"></script> -->
     <script src="index.js"></script>
 </body>

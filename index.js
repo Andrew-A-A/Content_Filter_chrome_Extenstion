@@ -2,6 +2,7 @@ const reader = new FileReader();
 let image=new Image();
 let inputImage = document.querySelector('input[type="file"]');
 var images=document.querySelectorAll("img");
+
 //#region Methods used only to test functionality with the dummy UI
 // document.getElementById('upload').addEventListener('change', function() {
 //     const file = this.files[0];
@@ -386,4 +387,26 @@ function blurToxicText(toxicText) {
   }
 
 
+}
+
+document.getElementById('filter').addEventListener('click',goToPageB);
+function goToPageB() {
+  //document.getElementById('pageB').style.display = 'block'
+//document.getElementById('pageA').style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+document.getElementById('pageB').style.transform = 'translateX(15%)';
+}
+document.getElementById('btn1').addEventListener('click',CancelChanges);
+function CancelChanges() {
+  document.getElementById('pageA').style.transform = 'translateX(0)';
+  document.getElementById('pageB').style.transform = 'translateX(100%)';
+  fireImagesCheckbox.checked=false;
+  accidentImagesCheckbox.checked=false;
+  damagdBuildingsImagesCheckbox.checked=false;
+}
+document.getElementById('btn2').addEventListener('click',ApplyChanges);
+function ApplyChanges() {
+  document.getElementById('pageA').style.transform = 'translateX(0)';
+  document.getElementById('pageB').style.transform = 'translateX(100%)';
+  //document.getElementById('pageA').style.backgroundColor = 'white';
+  //document.getElementById('pageB').style.display = 'none';  Hide overlay
 }
