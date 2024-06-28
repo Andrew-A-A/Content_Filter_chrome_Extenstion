@@ -148,6 +148,15 @@ function grabText() {
   console.log("GrabText() called");
   return textNodes.map(node => node.textContent);
 }
+function grabTextTags() {
+  const elements = document.querySelectorAll('span, b, h1, h2, h3, h4, h5, h6');
+
+  const textList = Array.from(elements).map(element => element.textContent.trim());
+
+  console.log("grabText() called");
+  return textList;
+}
+
 
 // Handle the result of the remote script execution after get all images URLs
 function onResult(frames) {
@@ -301,7 +310,7 @@ function executeScript(tab) {
     chrome.scripting.executeScript(
     {
       target:{tabId:tab.id,allFrames:true},
-      func:grabText
+      func:grabTextTags
     },
       onTextResult //Handle the result recived after grab all strings 
     )
