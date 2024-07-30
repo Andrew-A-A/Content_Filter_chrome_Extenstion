@@ -10,7 +10,7 @@ To handle the requests from this extension, we have a dedicated backend project.
 https://github.com/user-attachments/assets/8fc039aa-6fc9-4e60-be36-c4cd559229a1
 
 ### Documentation
-Documentation folder in project file contatins the following:
+Documentation folder contatins the following:
 * Project documentation 
 * Demo video
 * Project poster
