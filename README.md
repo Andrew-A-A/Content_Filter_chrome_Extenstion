@@ -15,7 +15,7 @@ Documentation folder in project file contatins the following:
 * Demo video
 * Project poster
 * Project research paper
-* All discussion presentations ( 3 .ppt files )
+* All discussions presentations ( 3 .ppt files )
 
 ### Getting Started
 
